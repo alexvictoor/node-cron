@@ -1,14 +1,28 @@
 import { SpawnOptions } from 'child_process';
 import { DateTime } from 'luxon';
-import { CONSTRAINTS, TIME_UNITS_MAP } from '../constants';
+import { CONSTRAINTS, PRESETS, TIME_UNITS_MAP } from '../constants';
 import { CronJob } from '../job';
 import { IntRange } from './utils';
+import type { CRON } from 'ts-cron-validator';
 
+type CronTimePresets = keyof typeof PRESETS;
+export type CronTimeType<CT> = CT extends string
+	? CT extends CronTimePresets
+		? CT
+		: CRON<CT> extends never
+			? never
+			: CT
+	: CT extends DateTime
+		? DateTime
+		: CT extends Date
+			? Date
+			: never;
 interface BaseCronJobParams<
 	OC extends CronOnCompleteCommand | null = null,
-	C = null
+	C = null,
+	CT = unknown
 > {
-	cronTime: string | Date | DateTime;
+	cronTime: CronTimeType<CT>;
 	onTick: CronCommand<C, WithOnComplete<OC>>;
 	onComplete?: OC;
 	start?: boolean | null;
@@ -19,8 +33,9 @@ interface BaseCronJobParams<
 
 export type CronJobParams<
 	OC extends CronOnCompleteCommand | null = null,
-	C = null
-> = BaseCronJobParams<OC, C> &
+	C = null,
+	CT = unknown
+> = BaseCronJobParams<OC, C, CT> &
 	(
 		| {
 				timeZone?: string | null;

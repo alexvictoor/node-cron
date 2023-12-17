@@ -33,7 +33,8 @@ function testCronJob(
 	// console.debug(cronTime, '|', timeZone, '|', utcOffset);
 	try {
 		const job = new CronJob(
-			cronTime,
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
+			cronTime as any,
 			function () {},
 			null,
 			start,

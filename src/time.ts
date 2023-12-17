@@ -23,7 +23,7 @@ import {
 } from './types/cron.types';
 import { getRecordKeys } from './utils';
 
-export class CronTime {
+export class CronTime<CT> {
 	source: string | DateTime;
 	timeZone?: string;
 	utcOffset?: number;
@@ -37,17 +37,17 @@ export class CronTime {
 	private dayOfWeek: TimeUnitField<'dayOfWeek'> = {};
 
 	constructor(
-		source: CronJobParams['cronTime'],
+		source: CronJobParams<null, null, CT>['cronTime'],
 		timeZone?: CronJobParams['timeZone'],
 		utcOffset?: null
 	);
 	constructor(
-		source: CronJobParams['cronTime'],
+		source: CronJobParams<null, null, CT>['cronTime'],
 		timeZone?: null,
 		utcOffset?: CronJobParams['utcOffset']
 	);
 	constructor(
-		source: CronJobParams['cronTime'],
+		source: CronJobParams<null, null, CT>['cronTime'],
 		timeZone?: CronJobParams['timeZone'],
 		utcOffset?: CronJobParams['utcOffset']
 	) {
@@ -135,7 +135,7 @@ export class CronTime {
 	sendAt(): DateTime;
 	sendAt(i: number): DateTime[];
 	sendAt(i?: number): DateTime | DateTime[] {
-		let date =
+		let date: DateTime =
 			this.realDate && this.source instanceof DateTime
 				? this.source
 				: DateTime.local();

@@ -490,7 +490,8 @@ describe('cron', () => {
 			// time in `zone`, making sure that it is a different
 			// hour than local time.
 			const job = new CronJob(
-				`${t.second} ${t.minute} ${t.hour} * * *`,
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
+				`${t.second} ${t.minute} ${t.hour} * * *` as any,
 				callback,
 				null,
 				true,
@@ -529,7 +530,8 @@ describe('cron', () => {
 			// time in `zone`, making sure that it is a different
 			// hour than local time.
 			const job = new CronJob(
-				`${t.second} ${t.minute} ${t.hour} * * *`,
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
+				`${t.second} ${t.minute} ${t.hour} * * *` as any,
 				callback,
 				null,
 				true,
@@ -659,7 +661,8 @@ describe('cron', () => {
 	it('should not get into an infinite loop on invalid times', () => {
 		expect(() => {
 			new CronJob(
-				'* 60 * * * *',
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
+				'* 60 * * * *' as any,
 				() => {
 					expect(true).toBe(true);
 				},
@@ -670,7 +673,8 @@ describe('cron', () => {
 
 		expect(() => {
 			new CronJob(
-				'* * 24 * * *',
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
+				'* * 24 * * *' as any,
 				() => {
 					expect(true).toBe(true);
 				},
@@ -931,7 +935,8 @@ describe('cron', () => {
 			const utcOffset = t.offset - 60;
 
 			const job = new CronJob(
-				`${t.second} ${t.minute} ${t.hour} * * *`,
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
+				`${t.second} ${t.minute} ${t.hour} * * *` as any,
 				callback,
 				null,
 				true,
@@ -960,7 +965,8 @@ describe('cron', () => {
 			// UTC Offset decreased by 45 minutes
 			const utcOffset = t.offset - 45;
 			const job = new CronJob(
-				`${t.second} ${t.minute} ${t.hour} * * *`,
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
+				`${t.second} ${t.minute} ${t.hour} * * *` as any,
 				callback,
 				null,
 				true,
@@ -1006,7 +1012,8 @@ describe('cron', () => {
 
 		it('should be able to detect out of range days of month', () => {
 			expect(() => {
-				new CronTime('* * 32 FEB *');
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
+				new CronTime('* * 32 FEB *' as any);
 			}).toThrow();
 		});
 	});

@@ -116,12 +116,14 @@ describe('crontime', () => {
 
 	it('should test unknown alias (* * * * jar *)', () => {
 		expect(() => {
+			// @ts-expect-error unknown alias
 			new CronTime('* * * * jar *');
 		}).toThrow();
 	});
 
 	it('should test unknown alias - short (* * * * j *)', () => {
 		expect(() => {
+			// @ts-expect-error unknown alias
 			new CronTime('* * * * j *');
 		}).toThrow();
 	});
@@ -134,12 +136,14 @@ describe('crontime', () => {
 
 	it('should test too few fields', () => {
 		expect(() => {
+			// @ts-expect-error too few fields
 			new CronTime('* * * *', null, null);
 		}).toThrow();
 	});
 
 	it('should test too many fields', () => {
 		expect(() => {
+			// @ts-expect-error too many fields
 			new CronTime('* * * * * * *', null, null);
 		}).toThrow();
 	});
@@ -159,45 +163,55 @@ describe('crontime', () => {
 	describe('should test out of range values', () => {
 		it('should test out of range minute', () => {
 			expect(() => {
+				// @ts-expect-error out of range minute
 				new CronTime('-1 * * * *', null, null);
 			}).toThrow();
 			expect(() => {
+				// @ts-expect-error out of range minute
 				new CronTime('60 * * * *', null, null);
 			}).toThrow();
 		});
 
 		it('should test out of range hour', () => {
 			expect(() => {
+				// @ts-expect-error out of range hour
 				new CronTime('* -1 * * *', null, null);
 			}).toThrow();
 			expect(() => {
+				// @ts-expect-error out of range hour
 				new CronTime('* 24 * * *', null, null);
 			}).toThrow();
 		});
 
 		it('should test out of range day-of-month', () => {
 			expect(() => {
+				// @ts-expect-error out of range day-of-month
 				new CronTime('* * 0 * *', null, null);
 			}).toThrow();
 			expect(() => {
+				// @ts-expect-error out of range day-of-month
 				new CronTime('* * 32 * *', null, null);
 			}).toThrow();
 		});
 
 		it('should test out of range month', () => {
 			expect(() => {
+				// @ts-expect-error out of range month
 				new CronTime('* * * 0 *', null, null);
 			}).toThrow();
 			expect(() => {
+				// @ts-expect-error out of range month
 				new CronTime('* * * 13 *', null, null);
 			}).toThrow();
 		});
 
 		it('should test out of range day-of-week', () => {
 			expect(() => {
+				// @ts-expect-error out of range day-of-week
 				new CronTime('* * * * -1', null, null);
 			}).toThrow();
 			expect(() => {
+				// @ts-expect-error out of range day-of-week
 				new CronTime('* * * * 8', null, null);
 			}).toThrow();
 		});
@@ -205,16 +219,19 @@ describe('crontime', () => {
 
 	it('should test invalid wildcard expression', () => {
 		expect(() => {
+			// @ts-expect-error invalid wildcard expression
 			new CronTime('* * * * 0*');
 		}).toThrow();
 	});
 
 	it('should test invalid step', () => {
 		expect(() => {
+			// @ts-expect-error invalid step
 			new CronTime('* * * 1/ *');
 		}).toThrow();
 
 		expect(() => {
+			// @ts-expect-error invalid step
 			new CronTime('* * * 1/0 *');
 		}).toThrow();
 
@@ -225,14 +242,17 @@ describe('crontime', () => {
 
 	it('should test invalid range', () => {
 		expect(() => {
+			// @ts-expect-error invalid range
 			new CronTime('* 2-1 * * *');
 		}).toThrow();
 
 		expect(() => {
+			// @ts-expect-error invalid range
 			new CronTime('* 2-0 * * *');
 		}).toThrow();
 
 		expect(() => {
+			// @ts-expect-error invalid range
 			new CronTime('* 2- * * *');
 		}).toThrow();
 	});
@@ -260,6 +280,7 @@ describe('crontime', () => {
 
 	it('should test illegal repetition syntax', () => {
 		expect(() => {
+			// @ts-expect-error illegal repetition syntax
 			new CronTime('* * /4 * * *');
 		}).toThrow();
 	});
@@ -353,12 +374,14 @@ describe('crontime', () => {
 	describe('should throw an exception because `L` not supported', () => {
 		it('(* * * L * *)', () => {
 			expect(() => {
+				// @ts-expect-error `L` not supported
 				new CronTime('* * * L * *');
 			}).toThrow();
 		});
 
 		it('(* * * * * L)', () => {
 			expect(() => {
+				// @ts-expect-error `L` not supported
 				new CronTime('* * * * * L');
 			}).toThrow();
 		});

@@ -11,8 +11,12 @@ import {
 	WithOnComplete
 } from './types/cron.types';
 
-export class CronJob<OC extends CronOnCompleteCommand | null = null, C = null> {
-	cronTime: CronTime;
+export class CronJob<
+	OC extends CronOnCompleteCommand | null = null,
+	C = null,
+	CT = unknown
+> {
+	cronTime: CronTime<CT>;
 	running = false;
 	unrefTimeout = false;
 	lastExecution: Date | null = null;
@@ -26,7 +30,7 @@ export class CronJob<OC extends CronOnCompleteCommand | null = null, C = null> {
 	private _callbacks: CronCallback<C, WithOnComplete<OC>>[] = [];
 
 	constructor(
-		cronTime: CronJobParams<OC, C>['cronTime'],
+		cronTime: CronJobParams<OC, C, CT>['cronTime'],
 		onTick: CronJobParams<OC, C>['onTick'],
 		onComplete?: CronJobParams<OC, C>['onComplete'],
 		start?: CronJobParams<OC, C>['start'],
@@ -37,7 +41,7 @@ export class CronJob<OC extends CronOnCompleteCommand | null = null, C = null> {
 		unrefTimeout?: CronJobParams<OC, C>['unrefTimeout']
 	);
 	constructor(
-		cronTime: CronJobParams<OC, C>['cronTime'],
+		cronTime: CronJobParams<OC, C, CT>['cronTime'],
 		onTick: CronJobParams<OC, C>['onTick'],
 		onComplete?: CronJobParams<OC, C>['onComplete'],
 		start?: CronJobParams<OC, C>['start'],
@@ -48,7 +52,7 @@ export class CronJob<OC extends CronOnCompleteCommand | null = null, C = null> {
 		unrefTimeout?: CronJobParams<OC, C>['unrefTimeout']
 	);
 	constructor(
-		cronTime: CronJobParams<OC, C>['cronTime'],
+		cronTime: CronJobParams<OC, C, CT>['cronTime'],
 		onTick: CronJobParams<OC, C>['onTick'],
 		onComplete?: CronJobParams<OC, C>['onComplete'],
 		start?: CronJobParams<OC, C>['start'],
@@ -98,9 +102,11 @@ export class CronJob<OC extends CronOnCompleteCommand | null = null, C = null> {
 		if (start) this.start();
 	}
 
-	static from<OC extends CronOnCompleteCommand | null = null, C = null>(
-		params: CronJobParams<OC, C>
-	) {
+	static from<
+		OC extends CronOnCompleteCommand | null = null,
+		C = null,
+		CT = unknown
+	>(params: CronJobParams<OC, C, CT>) {
 		// runtime check for JS users
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (params.timeZone != null && params.utcOffset != null) {
@@ -108,7 +114,7 @@ export class CronJob<OC extends CronOnCompleteCommand | null = null, C = null> {
 		}
 
 		if (params.timeZone != null) {
-			return new CronJob<OC, C>(
+			return new CronJob<OC, C, CT>(
 				params.cronTime,
 				params.onTick,
 				params.onComplete,
@@ -120,7 +126,7 @@ export class CronJob<OC extends CronOnCompleteCommand | null = null, C = null> {
 				params.unrefTimeout
 			);
 		} else if (params.utcOffset != null) {
-			return new CronJob<OC, C>(
+			return new CronJob<OC, C, CT>(
 				params.cronTime,
 				params.onTick,
 				params.onComplete,
@@ -132,7 +138,7 @@ export class CronJob<OC extends CronOnCompleteCommand | null = null, C = null> {
 				params.unrefTimeout
 			);
 		} else {
-			return new CronJob<OC, C>(
+			return new CronJob<OC, C, CT>(
 				params.cronTime,
 				params.onTick,
 				params.onComplete,
@@ -175,7 +181,7 @@ export class CronJob<OC extends CronOnCompleteCommand | null = null, C = null> {
 		}
 	}
 
-	setTime(time: CronTime) {
+	setTime(time: CronTime<CT>) {
 		if (!(time instanceof CronTime)) {
 			throw new CronError('time must be an instance of CronTime.');
 		}
